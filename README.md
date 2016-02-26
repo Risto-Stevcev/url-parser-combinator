@@ -1,6 +1,8 @@
 # url-parser-combinator
 A proper url parser and combinator that works with [eulalie](https://github.com/bodil/eulalie).
 
+[![Build Status](https://travis-ci.org/Risto-Stevcev/url-parser-combinator.svg)](https://travis-ci.org/Risto-Stevcev/url-parser-combinator)
+
 ## usage
 
 ```javascript

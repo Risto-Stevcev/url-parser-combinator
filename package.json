@@ -1,6 +1,6 @@
 {
   "name": "url-parser-combinator",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "A proper url parser and combinator that works with eulalie",
   "main": "index.js",
   "scripts": {

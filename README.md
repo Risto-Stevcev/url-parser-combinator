@@ -5,7 +5,7 @@
 A proper url parser and combinator that works with [eulalie](https://github.com/bodil/eulalie).
 
 
-## usage
+## Usage
 
 ```javascript
 const parse = require('url-parser-combinator').parse
@@ -17,7 +17,7 @@ var badUrl = parse('//foo//bar')
 // false
 ```
 
-## implementation
+## Implementation
 
 The parser is an implementation of the BNF form for URLs based on the [RFC 1808 spec](http://www.ietf.org/rfc/rfc1808.txt).
 
@@ -44,5 +44,5 @@ const parser = p.seq(function*() {
 });
 ```
 
-## license
+## License
 Licensed under the MIT license.

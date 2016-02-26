@@ -33,6 +33,6 @@ describe('Urls', () => {
               ]
 
   it('should parse the urls', () => {
-    this.urls.forEach(url => expect(parse(url)).to.have.property('value', url))
+    this.urls.forEach(url => expect(parse(url)).to.equal(url))
   })
 })

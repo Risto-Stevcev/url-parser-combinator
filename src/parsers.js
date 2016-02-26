@@ -167,7 +167,7 @@ let seqEOF = function(parser) {
   })
 }
 
-let parse = string => p.parse(seqEOF(URL), p.stream(string))
+let parse = string => p.parse(seqEOF(URL), p.stream(string)).value || false
 
 
 module.exports = {

@@ -5,14 +5,6 @@ const expect = require('chai').expect
 
 const s = require('../src/parsers')
 
-let many = function(parser) {
-  return p.seq(function*() {
-    const value = (yield parser).value
-    yield p.eof
-    return value
-  })
-}
-
 describe('Predicates', () => {
   describe('isHex', () => {
     it('should match the correct chars', () => {

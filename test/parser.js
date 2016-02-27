@@ -1,11 +1,8 @@
 'use strict'
-require('babel-polyfill')
 const expect = require('chai').expect
-    , p      = require('eulalie')
-
 const parse = require('../index').parse
 
-describe('Urls', () => {
+describe('Parser', () => {
   this.urls = [ 'g:h'
               , 'http://a/b/c/g'
               , 'http://a/b/c/g/'
@@ -34,5 +31,9 @@ describe('Urls', () => {
 
   it('should parse the urls', () => {
     this.urls.forEach(url => expect(parse(url)).to.equal(url))
+  })
+
+  it('should fail to parse the url', () => {
+    expect(parse('//foo//bar')).to.equal('')
   })
 })

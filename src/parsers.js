@@ -68,10 +68,9 @@ let safe        = p.sat(isSafe)
 
 let hex         = p.sat(isHex)
   , escape      = p.seq(function*() {
-                    const val1 = (yield p.char('%')).value
-                        , val2 = (yield hex).value
-                        , val3 = (yield hex).value
-                    return `${val1}${val2}${val3}`
+                    return (yield p.char('%')).value
+                         + (yield hex).value
+                         + (yield hex).value
                   })
 
 let unreserved  = p.either([p.letter, p.digit, safe, extra])
@@ -85,77 +84,64 @@ let scheme   = p.many1(p.either([p.letter, p.digit, p.char('+'), p.char('-'), p.
 
 let param  = p.many(p.either([pchar, p.char('/')]))
   , params = p.seq(function*() {
-               const val1 = (yield param).value
-               const val2 = (yield p.many(p.seq(function*() {
-                 const val2a = (yield p.char(';')).value
-                     , val2b = (yield param).value
-                 return `${val2a}${val2b}`
-               }))).value
-               return `${val1}${val2}`
+               return (yield param).value
+                    + (yield p.many(p.seq(function*() {
+                        return (yield p.char(';')).value
+                             + (yield param).value
+                      }))).value
              })
 
 let segment  = p.many(pchar)
   , fsegment = p.many1(pchar)
   , path     = p.seq(function*() {
-                 const val1 = (yield fsegment).value
-                 const val2 = (yield p.many(p.seq(function*() {
-                   const val2a = (yield p.char('/')).value
-                       , val2b = (yield segment).value
-                   return `${val2a}${val2b}`
-                 }))).value
-                 return `${val1}${val2}`
+                 return (yield fsegment).value
+                      + (yield p.many(p.seq(function*() {
+                          return (yield p.char('/')).value
+                               + (yield segment).value
+                        }))).value
                })
 
 let rel_path = p.seq(function*() {
-                 const val1 = (yield p.maybe(path)).value
-                 const val2 = (yield p.maybe(p.seq(function*() {
-                   const val2a = (yield p.char(';')).value
-                       , val2b = (yield params).value
-                   return `${val2a}${val2b}`
-                 }))).value
-                 const val3 = (yield p.maybe(p.seq(function*() {
-                   const val3a = (yield p.char('?')).value 
-                       , val3b = (yield query).value
-                   return `${val3a}${val3b}`
-                 }))).value
-                 return `${val1}${val2}${val3}`
+                 return (yield p.maybe(path)).value
+                      + (yield p.maybe(p.seq(function*() {
+                          return (yield p.char(';')).value
+                               + (yield params).value
+                        }))).value
+                      + (yield p.maybe(p.seq(function*() {
+                          return (yield p.char('?')).value 
+                               + (yield query).value
+                        }))).value
                })
 let abs_path = p.seq(function*() {
-                 const val1 = (yield p.char('/')).value
-                     , val2 = (yield rel_path).value
-                 return `${val1}${val2}`
+                 return (yield p.char('/')).value
+                      + (yield rel_path).value
                })
 let net_path = p.seq(function*() {
-                 const val1 = (yield p.string('//')).value
-                     , val2 = (yield net_loc).value
-                     , val3 = (yield p.maybe(abs_path)).value
-                 return `${val1}${val2}${val3}`
+                 return (yield p.string('//')).value
+                      + (yield net_loc).value
+                      + (yield p.maybe(abs_path)).value
                })
 
 let relativeURL = p.either([net_path, abs_path, rel_path])
 
 let genericRL = p.seq(function*() {
-                  const val1 = (yield scheme).value
-                      , val2 = (yield p.char(':')).value
-                      , val3 = (yield relativeURL).value
-                  return `${val1}${val2}${val3}`
+                  return (yield scheme).value
+                       + (yield p.char(':')).value
+                       + (yield relativeURL).value
                 })
 
 let absoluteURL = p.either([genericRL, p.seq(function*() {
-                    const val1 = (yield scheme).value
-                        , val2 = (yield p.char(':')).value
-                        , val3 = (yield p.many(p.either([uchar, reserved]))).value
-                    return `${val1}${val2}${val3}`
+                    return (yield scheme).value
+                         + (yield p.char(':')).value
+                         + (yield p.many(p.either([uchar, reserved]))).value
                   })])
 
 let URL = p.seq(function*() {
-            const val1 = (yield p.either([absoluteURL, relativeURL])).value
-            const val2 = (yield p.maybe(p.seq(function*() {
-              const val2a = (yield p.char('#')).value
-                  , val2b = (yield fragment).value
-              return `${val2a}${val2b}`
-            }))).value
-            return `${val1}${val2}`
+            return (yield p.either([absoluteURL, relativeURL])).value
+                 + (yield p.maybe(p.seq(function*() {
+                     return (yield p.char('#')).value
+                          + (yield fragment).value
+                   }))).value
           })
 
 
@@ -167,7 +153,7 @@ let seqEOF = function(parser) {
   })
 }
 
-let parse = string => p.parse(seqEOF(URL), p.stream(string)).value || false
+let parse = string => p.parse(seqEOF(URL), p.stream(string)).value || ''
 
 
 module.exports = {

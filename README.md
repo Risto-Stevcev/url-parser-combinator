@@ -14,8 +14,11 @@ var goodUrl = parse('http://localhost:80/foo/bar?key1=value1&key2=value2')
 // 'http://localhost:80/foo/bar?key1=value1&key2=value2'
 
 var badUrl = parse('//foo//bar')
-// false
+// ''
 ```
+
+Or you can feed the `require('url-parser-combinator').URL` combinator into eulalie to parse a url.
+
 
 ## Implementation
 

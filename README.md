@@ -8,16 +8,16 @@ A proper url parser and combinator that works with [eulalie](https://github.com/
 ## Usage
 
 ```javascript
-const parse = require('url-parser-combinator').parse
+const parser = require('url-parser-combinator')
 
-var goodUrl = parse('http://localhost:80/foo/bar?key1=value1&key2=value2')
+var goodUrl = parser.parse('http://localhost:80/foo/bar?key1=value1&key2=value2')
 // 'http://localhost:80/foo/bar?key1=value1&key2=value2'
 
-var badUrl = parse('//foo//bar')
+var badUrl = parser.parse('//foo//bar')
 // ''
 ```
 
-Or you can feed the `require('url-parser-combinator').URL` combinator into eulalie to parse a url.
+Or you can feed the `parser.URL` combinator into eulalie to parse a url.
 
 
 ## Implementation
